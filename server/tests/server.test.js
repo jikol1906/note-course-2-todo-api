@@ -131,10 +131,7 @@ describe('DELETE /todos/:id', () => {
         })
       })
 
-
-
-
-  });
+    });
 
   it('should return 404 if todo not found', (done) => {
     var hexId = new ObjectID().toHexString();
