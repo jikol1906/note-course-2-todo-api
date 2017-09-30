@@ -1,3 +1,5 @@
+require('./config/config.js');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
@@ -54,7 +56,7 @@ app.get('/todos/:id', (req,res) => {
 })
 
 app.patch('/todos/:id', (req,res) => {
-  
+
   var id = req.params.id;
   var body = _.pick(req.body, ['text', 'completed']);
 
