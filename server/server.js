@@ -1,11 +1,11 @@
-require('./config/config.js');
+require('../config/config.js');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 
-var {mongoose} = require('./db/mongoose')
+var {mongoose} = require('../db/mongoose')
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
@@ -26,7 +26,7 @@ app.post('/todos', (req,res) => {
   });
 });
 
-console.log(__dirname)
+
 
 app.get('/todos',(req,res) => {
   Todo.find().then((todos) => {
@@ -105,6 +105,26 @@ app.delete('/todos/:id', (req,res) => {
   })
 
 })
+
+app.post('/users', (req,res) => {
+
+  var body = _.pick(req.body, ['email', 'password']);
+  var user = new User(body);
+
+  user.save().then(() => {
+    console.log('user saved');
+    return user.generateAuthToken();
+    //res.send(user);
+  }).then((token) => {
+    res.header('x-auth', token).send(user);
+  }).catch((e) => {
+    console.log('error');
+    res.status(400).send(e);
+  })
+
+
+
+});
 
 app.listen(port,() => {
   console.log(`Started on port ${port}`);
