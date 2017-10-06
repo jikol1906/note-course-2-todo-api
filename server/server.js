@@ -12,6 +12,7 @@ var {authenticate} = require('./middleware/authenticate');
 
 var app = express();
 var port = process.env.PORT || 3000;
+
 app.use(bodyParser.json());
 
 app.post('/todos', (req,res) => {
@@ -113,13 +114,10 @@ app.post('/users', (req,res) => {
   var user = new User(body);
 
   user.save().then(() => {
-    console.log('user saved');
-    return user.generateAuthToken();
-    //res.send(user);
+    return user.generateAuthToken();    
   }).then((token) => {
     res.header('x-auth', token).send(user);
   }).catch((e) => {
-    console.log('error');
     res.status(400).send(e);
   })
 
